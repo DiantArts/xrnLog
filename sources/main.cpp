@@ -1,20 +1,26 @@
+#define NDEBUG
+#define PRINT_DEBUG
 #include <pch.hpp>
-#include <fmt/format.h>
-#include <ThreadPool/ThreadPool.hpp>
+#include <Logger.hpp>
+
+struct K {
+    void run()
+    {
+        ::xrn::test(false, "lol");
+        // ::xrn::log("Message");
+        // ::xrn::log(::xrn::Logger::Level::none, "Message");
+        // ::xrn::log(::xrn::Logger::Level::success, "Message");
+        // ::xrn::log(::xrn::Logger::Level::note, "Message");
+        // ::xrn::log(::xrn::Logger::Level::info, "Message");
+        // ::xrn::log(::xrn::Logger::Level::trace, "Message");
+        // ::xrn::log(::xrn::Logger::Level::debug, "Message");
+        // ::xrn::log(::xrn::Logger::Level::warning, "Message");
+        // ::xrn::log(::xrn::Logger::Level::error, "Message");
+    }
+};
 
 int main()
 {
-    ::xrn::ThreadPool tp{ 20 };
-    ::std::atomic value{ 0uz };
-    for (auto i{ 0uz }; i < 100; ++i) {
-        tp.push([&value]{
-            ::fmt::print("enter lambda: {}\n", value);
-            ::std::this_thread::sleep_for(250ms);
-            value++;
-            ::fmt::print("exit lambda: {}\n", value);
-        });
-    }
-    tp.join();
-    ::fmt::print("final value: {}\n", value);
+    K{}.run();
     return 0;
 }

@@ -101,13 +101,13 @@ setupCmake() {
 }
 
 build() {
+    if [ ${clearNeeded} = true ]; then
+        clear
+    fi
     cmake --build ${buildDir} --config ${buildType} --parallel ${parallel} || exit $?
 }
 
 run() {
-    if [ ${clearNeeded} = true ]; then
-        clear
-    fi
     if [ ! -f "./${binary}" ]; then
         echo -e "${bold}${red}[ERROR]${normal}: the binary file './${binary}' does not exist. Try to:" 1>&2
         echo -e "    - ${bold}${red}Resolve${normal} the invalid script arguments" 1>&2
@@ -290,7 +290,7 @@ while [ $# -gt 0 ]; do
         if [[ $1 == *"-pch-"* ]] || [[ $1 == *"-pch" ]]; then
             pchNeeded=false;
         fi
-        shift ;;
+        ;;
     "'clean'") cleanNeeded=true; stopAfterCleanNeeded=true ;;
     "'re'"|"'remake'"|"'rebuild'") cleanNeeded=true; setupNeeded=true ;;
     "'test'"|"'tests'"|"'run_tests'"|"'unit_test'"|"'unit_tests'") testsNeeded=true ;;

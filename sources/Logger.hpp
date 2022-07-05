@@ -10,6 +10,23 @@ namespace xrn {
 ///
 /// \include Logger.hpp <Logger.hpp>
 ///
+/// Output varies if NDEBUG (no debug) that disable tests and PRINT_DEBUG
+/// that prints "success" if the test succeeded.
+/// The logger level is optional;
+/// The print format is the same as fmt (::std::format) library
+///
+/// \code cpp
+/// ::xrn::test(true, "Message");
+/// ::xrn::test(true, ::xrn::Logger::Level::none, "Message");
+/// ::xrn::test(true, ::xrn::Logger::Level::success, "Message");
+/// ::xrn::test(true, ::xrn::Logger::Level::note, "Message");
+/// ::xrn::test(true, ::xrn::Logger::Level::info, "Message");
+/// ::xrn::test(true, ::xrn::Logger::Level::trace, "Message");
+/// ::xrn::test(true, ::xrn::Logger::Level::debug, "Message");
+/// ::xrn::test(true, ::xrn::Logger::Level::warning, "Message");
+/// ::xrn::test(true, ::xrn::Logger::Level::error, "Message");
+/// \endcode
+///
 ///////////////////////////////////////////////////////////////////////////
 class Logger {
 

@@ -6,16 +6,16 @@
 struct K {
     void run()
     {
-        ::xrn::test(false, "lol");
-        // ::xrn::log("Message");
-        // ::xrn::log(::xrn::Logger::Level::none, "Message");
-        // ::xrn::log(::xrn::Logger::Level::success, "Message");
-        // ::xrn::log(::xrn::Logger::Level::note, "Message");
-        // ::xrn::log(::xrn::Logger::Level::info, "Message");
-        // ::xrn::log(::xrn::Logger::Level::trace, "Message");
-        // ::xrn::log(::xrn::Logger::Level::debug, "Message");
-        // ::xrn::log(::xrn::Logger::Level::warning, "Message");
-        // ::xrn::log(::xrn::Logger::Level::error, "Message");
+        // ::xrn::test(false, "lol");
+        ::xrn::test(true, "Message");
+        ::xrn::test(true, ::xrn::Logger::Level::none, "Message");
+        ::xrn::test(true, ::xrn::Logger::Level::success, "Message");
+        ::xrn::test(true, ::xrn::Logger::Level::note, "Message");
+        ::xrn::test(true, ::xrn::Logger::Level::info, "Message");
+        ::xrn::test(true, ::xrn::Logger::Level::trace, "Message");
+        ::xrn::test(true, ::xrn::Logger::Level::debug, "Message");
+        ::xrn::test(true, ::xrn::Logger::Level::warning, "Message");
+        ::xrn::test(true, ::xrn::Logger::Level::error, "Message");
     }
 };
 

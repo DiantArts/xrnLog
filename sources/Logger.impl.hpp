@@ -243,6 +243,10 @@ template <
     }
 #elif defined(NDEBUG)
     return;
+#else
+    if (condition) {
+        return;
+    }
 #endif
 
     Logger::outputLog(

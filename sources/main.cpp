@@ -1,4 +1,4 @@
-#define NDEBUG
+// #define NDEBUG
 #define PRINT_DEBUG
 #include <pch.hpp>
 #include <Logger.hpp>
@@ -8,14 +8,13 @@ struct K {
     {
         // ::xrn::test(false, "lol");
         ::xrn::test(true, "Message");
-        ::xrn::test(true, ::xrn::Logger::Level::none, "Message");
-        ::xrn::test(true, ::xrn::Logger::Level::success, "Message");
-        ::xrn::test(true, ::xrn::Logger::Level::note, "Message");
-        ::xrn::test(true, ::xrn::Logger::Level::info, "Message");
-        ::xrn::test(true, ::xrn::Logger::Level::trace, "Message");
-        ::xrn::test(true, ::xrn::Logger::Level::debug, "Message");
-        ::xrn::test(true, ::xrn::Logger::Level::warning, "Message");
-        ::xrn::test(true, ::xrn::Logger::Level::error, "Message");
+        ::xrn::test(false, ::xrn::Logger::Level::none, "Message");
+        ::xrn::test(false, ::xrn::Logger::Level::note, "Message");
+        ::xrn::test(false, ::xrn::Logger::Level::info, "Message");
+        ::xrn::test(false, ::xrn::Logger::Level::trace, "Message");
+        ::xrn::test(false, ::xrn::Logger::Level::debug, "Message");
+        ::xrn::test(false, ::xrn::Logger::Level::warning, "Message");
+        ::xrn::test(false, ::xrn::Logger::Level::error, "Message");
     }
 };
 

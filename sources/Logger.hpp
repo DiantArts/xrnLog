@@ -1,8 +1,5 @@
 #pragma once
 
-#include <fmt/format.h>
-#include <fmt/color.h>
-
 namespace xrn {
 
 ///////////////////////////////////////////////////////////////////////////
@@ -100,7 +97,7 @@ public:
     ///////////////////////////////////////////////////////////////////////////
     template <
         typename... Args
-    > static constexpr void logImpl(
+    > static void logImpl(
         ::std::string_view filepath,
         ::std::string_view functionName,
         ::std::size_t lineNumber,
@@ -113,7 +110,7 @@ public:
     ///////////////////////////////////////////////////////////////////////////
     template <
         typename... Args
-    > static constexpr void logImpl(
+    > static void logImpl(
         ::std::string_view filepath,
         ::std::string_view functionName,
         ::std::size_t lineNumber,
@@ -139,7 +136,7 @@ public:
     ///////////////////////////////////////////////////////////////////////////
     template <
         typename... Args
-    > static constexpr void testImpl(
+    > static void testImpl(
         bool condition,
         ::std::string_view filepath,
         ::std::string_view functionName,
@@ -153,7 +150,7 @@ public:
     ///////////////////////////////////////////////////////////////////////////
     template <
         typename... Args
-    > static constexpr void testImpl(
+    > static void testImpl(
         bool condition,
         ::std::string_view filepath,
         ::std::string_view functionName,
@@ -179,7 +176,7 @@ private:
     ///////////////////////////////////////////////////////////////////////////
     template <
         typename... Args
-    > static constexpr void outputLog(
+    > static void outputLog(
         ::std::string_view filepath,
         ::std::string_view functionName,
         ::std::size_t lineNumber,
@@ -193,7 +190,7 @@ private:
     ///////////////////////////////////////////////////////////////////////////
     template <
         typename... Args
-    > static constexpr void outputTest(
+    > static void outputTest(
         bool condition,
         ::std::string_view filepath,
         ::std::string_view functionName,
@@ -202,6 +199,12 @@ private:
         ::fmt::format_string<Args...> subformat,
         Args&&... args
     );
+
+    ///////////////////////////////////////////////////////////////////////////
+    /// \brief Format date
+    ///////////////////////////////////////////////////////////////////////////
+    [[ nodiscard ]] static auto getDate()
+        -> ::std::string;
 };
 
 } // namespace xrn

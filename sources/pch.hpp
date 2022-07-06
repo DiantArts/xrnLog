@@ -107,6 +107,10 @@
 #include <stop_token>
 #include <thread>
 
+#include <fmt/format.h>
+#include <fmt/color.h>
+// #include <spdlog/spdlog.h>
+
 using ::std::string_literals::operator""s;
 using ::std::literals::string_view_literals::operator""sv;
 using ::std::chrono_literals::operator""ms;

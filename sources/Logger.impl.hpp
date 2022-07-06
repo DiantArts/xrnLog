@@ -10,7 +10,7 @@
 ///////////////////////////////////////////////////////////////////////////
 template <
     typename... Args
-> constexpr void ::xrn::Logger::logImpl(
+> void ::xrn::Logger::logImpl(
     const ::std::string_view filepath,
     const ::std::string_view functionName,
     const ::std::size_t lineNumber,
@@ -33,7 +33,7 @@ template <
 ///////////////////////////////////////////////////////////////////////////
 template <
     typename... Args
-> constexpr void ::xrn::Logger::logImpl(
+> void ::xrn::Logger::logImpl(
     const ::std::string_view filepath,
     const ::std::string_view functionName,
     const ::std::size_t lineNumber,
@@ -69,7 +69,7 @@ template <
 ///////////////////////////////////////////////////////////////////////////
 template <
     typename... Args
-> constexpr void ::xrn::Logger::testImpl(
+> void ::xrn::Logger::testImpl(
     bool condition,
     const ::std::string_view filepath,
     const ::std::string_view functionName,
@@ -94,7 +94,7 @@ template <
 ///////////////////////////////////////////////////////////////////////////
 template <
     typename... Args
-> constexpr void ::xrn::Logger::testImpl(
+> void ::xrn::Logger::testImpl(
     bool condition,
     const ::std::string_view filepath,
     const ::std::string_view functionName,
@@ -127,7 +127,7 @@ template <
 ///////////////////////////////////////////////////////////////////////////
 template <
     typename... Args
-> constexpr void ::xrn::Logger::outputLog(
+> void ::xrn::Logger::outputLog(
     const ::std::string_view filepath,
     const ::std::string_view functionName,
     const ::std::size_t lineNumber,
@@ -204,7 +204,7 @@ template <
         );
         break;
     case Logger::Level::none: // no extra output. Should be avoided
-        ::fmt::print("{}: {}\n", callPosition, userMessage);
+        ::fmt::print("[{}] {} {}\n", Logger::getDate(), callPosition, userMessage);
         return;
     case Logger::Level::fatal: // error that cannot be recovered, throws an exception
     case Logger::Level::fatalError: // same as fatal
@@ -212,16 +212,18 @@ template <
             ::fmt::emphasis::bold | ::fmt::bg(fmt::color::red) | ::fmt::fg(fmt::color::black),
             "ERROR"
         );
-        throw ::std::runtime_error{ ::fmt::format("{} {}: {}", callPosition, logSpecifier, userMessage) };
+        throw ::std::runtime_error{
+            ::fmt::format("[{}] {} [{}] {}", Logger::getDate(), callPosition, logSpecifier, userMessage)
+        };
     };
 
-    ::fmt::print("{}: {}: {}\n", callPosition, logSpecifier, userMessage);
+    ::fmt::print("[{}] {} [{}] {}\n", Logger::getDate(), callPosition, logSpecifier, userMessage);
 }
 
 ///////////////////////////////////////////////////////////////////////////
 template <
     typename... Args
-> constexpr void ::xrn::Logger::outputTest(
+> void ::xrn::Logger::outputTest(
     const bool condition,
     const ::std::string_view filepath,
     const ::std::string_view functionName,
@@ -257,4 +259,61 @@ template <
         subformat,
         ::std::forward<decltype(args)>(args)...
     );
+}
+
+///////////////////////////////////////////////////////////////////////////
+auto ::xrn::Logger::getDate()
+    -> ::std::string
+{
+    std::time_t t = ::std::time(0);   // get time now
+    std::tm* now = ::std::localtime(&t);
+    ::std::string output;
+
+    // month
+    if (now->tm_mon < 10) {
+        output += '0';
+    }
+    output += ::std::to_string(now->tm_mon + 1);
+    output += '-';
+
+    // day
+    if (now->tm_mday < 10) {
+        output += '0';
+    }
+    output += ::std::to_string(now->tm_mday);
+    output += ' ';
+
+    // hour
+    if (now->tm_hour < 10) {
+        output += '0';
+    }
+    output += ::std::to_string(now->tm_hour);
+    output += ':';
+
+    // min
+    if (now->tm_min < 10) {
+        output += '0';
+    }
+    output += ::std::to_string(now->tm_min);
+    output += ':';
+
+    // sec
+    if (now->tm_sec < 10) {
+        output += '0';
+    }
+    output += ::std::to_string(now->tm_sec);
+    output += '.';
+
+    // ms
+    auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now().time_since_epoch());
+    const auto seconds = std::chrono::duration_cast<std::chrono::seconds>(ms);
+    ms -= seconds;
+    if (ms < 10ms) {
+        output += "00";
+    } else if (ms < 100ms) {
+        output += '0';
+    }
+    output += ::std::to_string(ms.count());
+
+    return output;
 }

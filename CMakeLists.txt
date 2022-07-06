@@ -10,7 +10,7 @@ set(XRN_BIN_NAME xrn)
 set(XRN_CXX_VERSION 23)
 
 # dependencies
-set(XRN_LIBS_REQUIRED fmt/8.1.1 spdlog/1.10.0 catch2/2.13.6)
+set(XRN_LIBS_REQUIRED fmt/8.1.1 catch2/2.13.6)
 set(XRN_LIBRARIES_REQUIREMENTS fmt Threads) # find_package
 set(XRN_LIBRARIES_DEPENDENCY fmt::fmt Threads::Threads) # target_link_libraries
 set(XRN_LIBRARIES_HEADERS fmt) # include_directories(${library}_INCLUDE_DIRS)

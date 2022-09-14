@@ -238,7 +238,7 @@ run_static_analysis()
 
 # download dependencies
 include(${XRN_TOOLCHAIN_DIR}/Dependencies.cmake)
-download_dependencies("${XRN_LIBS_REQUIRED}") # isn't check whether the dowloaded failed or not
+download_dependencies("${XRN_LIBRARIES_REQUIRED}") # isn't check whether the dowloaded failed or not
 
 
 

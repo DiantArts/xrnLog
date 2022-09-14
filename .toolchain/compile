@@ -4,9 +4,9 @@
 
 runProgram() (
     if [ ${buildType} = Debug ]; then
-        valgrind ./${binary} || exit $?
+        valgrind ./${binaryPath} || exit $?
     else
-        ./${binary} || exit $?
+        ./${binaryPath} || exit $?
     fi
 )
 
@@ -16,7 +16,8 @@ compiler=clang++
 buildDir=.build
 cxxVersion=23
 buildType=Release
-binary=${buildDir}/sources/xrnMeta
+binaryName=$(basename `git rev-parse --show-toplevel`)
+binaryPath=${buildDir}/sources/${binaryName}
 parallel=$(nproc)
 
 # -------------------------------------------------------------------------------------------------
@@ -117,8 +118,8 @@ build() {
 }
 
 run() {
-    if [ ! -f "./${binary}" ]; then
-        echo -e "${bold}${red}[ERROR]${normal}: the binary file './${binary}' does not exist. Try to:" 1>&2
+    if [ ! -f "./${binaryPath}" ]; then
+        echo -e "${bold}${red}[ERROR]${normal}: the binary file './${binaryPath}' does not exist. Try to:" 1>&2
         echo -e "    - ${bold}${red}Resolve${normal} the invalid script arguments" 1>&2
         echo -e "    - ${bold}${red}Fix${normal} compilation errors" 1>&2
         echo -e "    - Run the script again with the '-s' argument" 1>&2

@@ -1,5 +1,8 @@
 #pragma once
 
+#define SPDLOG_FMT_EXTERNAL ON
+#include <spdlog/spdlog.h>
+#include <spdlog/pattern_formatter.h>
 #include <fmt/format.h>
 #include <fmt/color.h>
 

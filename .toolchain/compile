@@ -380,6 +380,14 @@ fi
 
 # -------------------------------------------------------------------------------------------------
 
+if [ -d "./.logs" ]; then
+    str=$(date +"%F-%H-%M-%S")
+    mkdir -p ./.logs/.old/
+    cd ./.logs
+    tar -zcvf ./.old/log-${str}.tar.gz *.txt
+    cd -
+fi
+
 if [ ${cleanNeeded} = true ]; then
     clean
     if [ ${stopAfterCleanNeeded} = true ]; then

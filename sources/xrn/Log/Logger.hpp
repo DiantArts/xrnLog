@@ -95,7 +95,7 @@ public:
     ///////////////////////////////////////////////////////////////////////////
     template <
         typename... Args
-    > void logImpl(
+    > void log(
         ::std::string_view filepath,
         ::std::string_view functionName,
         ::std::size_t lineNumber,
@@ -109,7 +109,7 @@ public:
     ///////////////////////////////////////////////////////////////////////////
     template <
         typename... Args
-    > void logImpl(
+    > void log(
         ::std::string_view filepath,
         ::std::string_view functionName,
         ::std::size_t lineNumber,
@@ -122,7 +122,7 @@ public:
     ///////////////////////////////////////////////////////////////////////////
     template <
         typename... Args
-    > void assertImpl(
+    > void massert(
         bool condition,
         ::std::string_view filepath,
         ::std::string_view functionName,
@@ -139,26 +139,11 @@ public:
     ///////////////////////////////////////////////////////////////////////////
     template <
         typename... Args
-    > void assertImpl(
+    > void massert(
         bool condition,
         ::std::string_view filepath,
         ::std::string_view functionName,
         ::std::size_t lineNumber,
-        ::fmt::format_string<Args...> subformat,
-        Args&&... args
-    );
-
-    ///////////////////////////////////////////////////////////////////////////
-    /// \brief Assert and outputs the message with the right format if needed
-    ///////////////////////////////////////////////////////////////////////////
-    template <
-        typename... Args
-    > void silentAssertImpl(
-        bool condition,
-        ::std::string_view filepath,
-        ::std::string_view functionName,
-        ::std::size_t lineNumber,
-        Logger::Level level,
         ::fmt::format_string<Args...> subformat,
         Args&&... args
     );
@@ -190,6 +175,21 @@ private:
     //
     ///////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////////
+
+    ///////////////////////////////////////////////////////////////////////////
+    /// \brief Outputs the message with the right format
+    ///////////////////////////////////////////////////////////////////////////
+    template <
+        typename... Args
+    > void logImpl(
+        ::std::string_view filepath,
+        ::std::string_view functionName,
+        ::std::size_t lineNumber,
+        Logger::Level level,
+        bool outputToConsole,
+        ::fmt::format_string<Args...> subformat,
+        Args&&... args
+    );
 
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Format date
@@ -228,26 +228,20 @@ private:
 /// \brief Output logs
 ///////////////////////////////////////////////////////////////////////////
 #define XRN_LOG(...) \
-    ::xrn::Loggerl:get().logImpl(__FILE__, __FUNCTION__, __LINE__, __VA_ARGS__)
+    ::xrn::Logger::get().log(__FILE__, __FUNCTION__, __LINE__, __VA_ARGS__)
 
 ///////////////////////////////////////////////////////////////////////////
 /// \brief Throws a runtime_error with the right output
 ///////////////////////////////////////////////////////////////////////////
 #define XRN_THROW(...) \
-    ::xrn::Logger::get().logImpl(__FILE__, __FUNCTION__, __LINE__, ::xrn::Logger::Level::fatalError, __VA_ARGS__); \
+    ::xrn::Logger::get().log(__FILE__, __FUNCTION__, __LINE__, ::xrn::Logger::Level::fatalError, __VA_ARGS__); \
     throw ::std::logic_error{ "exception shoulh have been already thrown. Issue with XRN_THROW" }
 
 ///////////////////////////////////////////////////////////////////////////
 /// \brief Same as assert from <cassert>
 ///////////////////////////////////////////////////////////////////////////
 #define XRN_ASSERT(condition, ...) \
-    ::xrn::Logger::get().assertImpl((condition), __FILE__, __FUNCTION__, __LINE__, __VA_ARGS__)
-
-///////////////////////////////////////////////////////////////////////////
-/// \brief Same as assert from XRN_ASSERT but does not print success
-///////////////////////////////////////////////////////////////////////////
-#define XRN_SASSERT(condition, ...) \
-    ::xrn::Logger::get().silentAssertImpl((condition), __FILE__, __FUNCTION__, __LINE__, __VA_ARGS__)
+    ::xrn::Logger::get().massert((condition), __FILE__, __FUNCTION__, __LINE__, __VA_ARGS__)
 
 
 

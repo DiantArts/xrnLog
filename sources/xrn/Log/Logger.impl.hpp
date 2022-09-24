@@ -10,7 +10,7 @@
 
 template <
     typename... Args
-> void ::xrn::Logger::logImpl(
+> void ::xrn::Logger::log(
     const ::std::string_view filepath,
     const ::std::string_view functionName,
     const ::std::size_t lineNumber,
@@ -21,10 +21,347 @@ template <
 {
 #if defined(NO_DEBUG)
     if (level == Logger::Level::debug) {
-        return;
+        return this->logImpl(
+            filepath,
+            functionName,
+            lineNumber,
+            level,
+            false,
+            subformat,
+            ::std::forward<decltype(args)>(args)...
+        );
     }
 #endif // ifdef NO_DEBUG
+    return this->logImpl(
+        filepath,
+        functionName,
+        lineNumber,
+        level,
+        true,
+        subformat,
+        ::std::forward<decltype(args)>(args)...
+    );
+}
 
+template <
+    typename... Args
+> void ::xrn::Logger::log(
+    const ::std::string_view filepath,
+    const ::std::string_view functionName,
+    const ::std::size_t lineNumber,
+    const ::fmt::format_string<Args...> subformat,
+    Args&&... args
+)
+{
+    return this->logImpl(
+        filepath,
+        functionName,
+        lineNumber,
+        Logger::Level::none,
+        true,
+        subformat,
+        ::std::forward<decltype(args)>(args)...
+    );
+}
+
+///////////////////////////////////////////////////////////////////////////
+template <
+    typename... Args
+> void ::xrn::Logger::massert(
+    const bool condition,
+    const ::std::string_view filepath,
+    const ::std::string_view functionName,
+    const ::std::size_t lineNumber,
+    Logger::Level level,
+    const ::fmt::format_string<Args...> subformat,
+    Args&&... args
+)
+{
+#if defined(PRINT_DEBUG) && defined(NO_DEBUG)
+    if (level == Logger::Level::debug) {
+        if (condition) {
+            return this->logImpl(
+                filepath,
+                functionName,
+                lineNumber,
+                Logger::Level::success,
+                false,
+                subformat,
+                ::std::forward<decltype(args)>(args)...
+            );
+        } else {
+            return this->logImpl(
+                filepath,
+                functionName,
+                lineNumber,
+                level,
+                false,
+                subformat,
+                ::std::forward<decltype(args)>(args)...
+            );
+        }
+    } else if (condition) {
+        return this->logImpl(
+            filepath,
+            functionName,
+            lineNumber,
+            Logger::Level::success,
+            true,
+            subformat,
+            ::std::forward<decltype(args)>(args)...
+        );
+    } else {
+        return this->logImpl(
+            filepath,
+            functionName,
+            lineNumber,
+            level,
+            false,
+            subformat,
+            ::std::forward<decltype(args)>(args)...
+        );
+    }
+#elif defined(PRINT_DEBUG)
+    if (condition) {
+        return this->logImpl(
+            filepath,
+            functionName,
+            lineNumber,
+            Logger::Level::success,
+            true,
+            subformat,
+            ::std::forward<decltype(args)>(args)...
+        );
+    }
+#elif defined(NO_DEBUG)
+    if (level == Logger::Level::debug) {
+        if (condition) {
+            return this->logImpl(
+                filepath,
+                functionName,
+                lineNumber,
+                Logger::Level::success,
+                false,
+                subformat,
+                ::std::forward<decltype(args)>(args)...
+            );
+        } else {
+            return this->logImpl(
+                filepath,
+                functionName,
+                lineNumber,
+                level,
+                false,
+                subformat,
+                ::std::forward<decltype(args)>(args)...
+            );
+        }
+    } else if (condition) {
+        return this->logImpl(
+            filepath,
+            functionName,
+            lineNumber,
+            Logger::Level::success,
+            false,
+            subformat,
+            ::std::forward<decltype(args)>(args)...
+        );
+    } else {
+        return this->logImpl(
+            filepath,
+            functionName,
+            lineNumber,
+            level,
+            false,
+            subformat,
+            ::std::forward<decltype(args)>(args)...
+        );
+    }
+#else
+    if (condition) {
+        return this->logImpl(
+            filepath,
+            functionName,
+            lineNumber,
+            Logger::Level::success,
+            false,
+            subformat,
+            ::std::forward<decltype(args)>(args)...
+        );
+    }
+#endif
+    return this->logImpl(
+        filepath,
+        functionName,
+        lineNumber,
+        level,
+        true,
+        subformat,
+        ::std::forward<decltype(args)>(args)...
+    );
+}
+
+template <
+    typename... Args
+> void ::xrn::Logger::massert(
+    const bool condition,
+    const ::std::string_view filepath,
+    const ::std::string_view functionName,
+    const ::std::size_t lineNumber,
+    const ::fmt::format_string<Args...> subformat,
+    Args&&... args
+)
+{
+#if defined(PRINT_DEBUG) && defined(NO_DEBUG)
+    if (condition) {
+        return this->logImpl(
+            filepath,
+            functionName,
+            lineNumber,
+            Logger::Level::success,
+            true,
+            subformat,
+            ::std::forward<decltype(args)>(args)...
+        );
+    } else {
+        return this->logImpl(
+            filepath,
+            functionName,
+            lineNumber,
+            Logger::Level::fatalError,
+            false,
+            subformat,
+            ::std::forward<decltype(args)>(args)...
+        );
+    }
+#elif defined(PRINT_DEBUG)
+    if (condition) {
+        return this->logImpl(
+            filepath,
+            functionName,
+            lineNumber,
+            Logger::Level::success,
+            true,
+            subformat,
+            ::std::forward<decltype(args)>(args)...
+        );
+    }
+#elif defined(NO_DEBUG)
+    if (condition) {
+        return this->logImpl(
+            filepath,
+            functionName,
+            lineNumber,
+            Logger::Level::success,
+            false,
+            subformat,
+            ::std::forward<decltype(args)>(args)...
+        );
+    } else {
+        return this->logImpl(
+            filepath,
+            functionName,
+            lineNumber,
+            Logger::Level::fatalError,
+            false,
+            subformat,
+            ::std::forward<decltype(args)>(args)...
+        );
+    }
+#else
+    if (condition) {
+        return this->logImpl(
+            filepath,
+            functionName,
+            lineNumber,
+            Logger::Level::success,
+            false,
+            subformat,
+            ::std::forward<decltype(args)>(args)...
+        );
+    }
+#endif
+    return this->logImpl(
+        filepath,
+        functionName,
+        lineNumber,
+        Logger::Level::fatalError,
+        true,
+        subformat,
+        ::std::forward<decltype(args)>(args)...
+    );
+}
+
+///////////////////////////////////////////////////////////////////////////
+[[ nodiscard ]] auto ::xrn::Logger::get()
+    -> Logger&
+{
+    return Logger::m_logger;
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+// Constructor
+//
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+::xrn::Logger::Logger()
+    : m_consoleFile{ ::std::make_shared<::spdlog::sinks::stdout_color_sink_mt>() }
+    , m_outputFile{ ::std::make_shared<::spdlog::sinks::basic_file_sink_mt>(".logs/output.txt") }
+    , m_errorFile{ ::std::make_shared<::spdlog::sinks::basic_file_sink_mt>(".logs/error.txt") }
+    , m_console{ "consoleSink", m_consoleFile }
+    , m_output{ "outputSink", m_outputFile }
+    , m_error{ "errorSink", m_errorFile }
+{
+    m_consoleFile->set_level(::spdlog::level::trace);
+    m_consoleFile->set_pattern("[%m-%d-%C %H:%M:%S.%f] %v");
+    m_console.set_level(::spdlog::level::trace);
+    m_console.flush_on(::spdlog::level::warn);
+
+    m_outputFile->set_level(::spdlog::level::trace);
+    m_outputFile->set_pattern("[%m-%d-%C %H:%M:%S.%F] [%t] %v");;
+    m_output.set_level(::spdlog::level::trace);
+    m_output.flush_on(::spdlog::level::warn);
+
+    m_errorFile->set_level(::spdlog::level::warn);
+    m_errorFile->set_pattern("[%m-%d-%C %H:%M:%S.%F] [%t] %v");;
+    m_error.set_level(::spdlog::level::warn);
+    m_error.flush_on(::spdlog::level::warn);
+}
+
+::xrn::Logger::~Logger()
+{
+    m_console.flush();
+    m_output.flush();
+    m_error.flush();
+    ::spdlog::shutdown();
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+// Helpers
+//
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////
+template <
+    typename... Args
+> void ::xrn::Logger::logImpl(
+    const ::std::string_view filepath,
+    const ::std::string_view functionName,
+    const ::std::size_t lineNumber,
+    const Logger::Level level,
+    const bool displayOnConsole,
+    const ::fmt::format_string<Args...> subformat,
+    Args&&... args
+)
+{
     // call position
     auto relaviteFilepath{
         ::std::filesystem::relative(::std::filesystem::path{ filepath }, ".").generic_string()
@@ -46,6 +383,7 @@ template <
     switch (level) {
     case Logger::Level::none: // no extra output. Should be avoided
         ::fmt::print("{}\n", userMessage);
+        m_output.trace("[{}] {}", callPosition, userMessage);
         return;
     case Logger::Level::success: // is successful
         logSpecifier = ::fmt::format(
@@ -106,28 +444,40 @@ template <
     case Logger::Level::none: // no extra output. Should be avoided
     case Logger::Level::success: // is successful
     case Logger::Level::note: // user driven (configuration operations)
-        m_console.trace("[{}] {}", logSpecifier, userMessage);
-        m_output.trace("[{}] {}", logSpecifier, userMessage);
+        if (displayOnConsole) {
+            m_console.trace("[{}] {}", logSpecifier, userMessage);
+        }
+        m_output.trace("[{}] [{}] {}", logSpecifier, callPosition, userMessage);
         break;
     case Logger::Level::info: // user driven (regularly scheduled operations)
-        m_console.info("[{}] {}", logSpecifier, userMessage);
-        m_output.info("[{}] {}", logSpecifier, userMessage);
+        if (displayOnConsole) {
+            m_console.info("[{}] {}", logSpecifier, userMessage);
+        }
+        m_output.trace("[{}] [{}] {}", logSpecifier, callPosition, userMessage);
         break;
     case Logger::Level::trace: // tracks potential bugs
-        m_console.trace("[{}] [{}] {}", logSpecifier, callPosition, userMessage);
+        if (displayOnConsole) {
+            m_console.trace("[{}] [{}] {}", logSpecifier, callPosition, userMessage);
+        }
         m_output.trace("[{}] [{}] {}", logSpecifier, callPosition, userMessage);
         break;
     case Logger::Level::debug: // (disabled with NO_DEBUG)
-        m_console.debug("[{}] [{}] {}", logSpecifier, callPosition, userMessage);
+        if (displayOnConsole) {
+            m_console.debug("[{}] [{}] {}", logSpecifier, callPosition, userMessage);
+        }
         m_output.debug("[{}] [{}] {}", logSpecifier, callPosition, userMessage);
         break;
     case Logger::Level::warning: // can potential become an error
-        m_console.warn("[{}] [{}] {}", logSpecifier, callPosition, userMessage);
+        if (displayOnConsole) {
+            m_console.warn("[{}] [{}] {}", logSpecifier, callPosition, userMessage);
+        }
         m_output.warn("[{}] [{}] {}", logSpecifier, callPosition, userMessage);
         m_error.warn("[{}] [{}] {}", logSpecifier, callPosition, userMessage);
         break;
     case Logger::Level::error: // error that cannot be recovered but does not throw
-        m_console.error("[{}] [{}] {}", logSpecifier, callPosition, userMessage);
+        if (displayOnConsole) {
+            m_console.error("[{}] [{}] {}", logSpecifier, callPosition, userMessage);
+        }
         m_output.error("[{}] [{}] {}", logSpecifier, callPosition, userMessage);
         m_error.error("[{}] [{}] {}", logSpecifier, callPosition, userMessage);
         break;
@@ -135,135 +485,6 @@ template <
         throw ::std::runtime_error{ "This throw should never been used" };
     };
 }
-
-///////////////////////////////////////////////////////////////////////////
-template <
-    typename... Args
-> void ::xrn::Logger::assertImpl(
-    const bool condition,
-    const ::std::string_view filepath,
-    const ::std::string_view functionName,
-    const ::std::size_t lineNumber,
-    Logger::Level level,
-    const ::fmt::format_string<Args...> subformat,
-    Args&&... args
-)
-{
-#if defined(PRINT_DEBUG) && defined(NO_DEBUG)
-    if (condition) {
-        level = Logger::Level::success;
-    } else {
-        return;
-    }
-#elif defined(PRINT_DEBUG)
-    if (condition) {
-        level = Logger::Level::success;
-    }
-#elif defined(NO_DEBUG)
-    return;
-#else
-    if (condition) {
-        return;
-    }
-#endif
-
-    Logger::logImpl(
-        filepath,
-        functionName,
-        lineNumber,
-        level,
-        subformat,
-        ::std::forward<decltype(args)>(args)...
-    );
-}
-
-///////////////////////////////////////////////////////////////////////////
-template <
-    typename... Args
-> void ::xrn::Logger::silentAssertImpl(
-    const bool condition,
-    const ::std::string_view filepath,
-    const ::std::string_view functionName,
-    const ::std::size_t lineNumber,
-    Logger::Level level,
-    const ::fmt::format_string<Args...> subformat,
-    Args&&... args
-)
-{
-#if defined(NO_DEBUG)
-    return;
-#endif
-
-    if (condition) {
-        return;
-    }
-
-    Logger::logImpl(
-        filepath,
-        functionName,
-        lineNumber,
-        level,
-        subformat,
-        ::std::forward<decltype(args)>(args)...
-    );
-}
-
-///////////////////////////////////////////////////////////////////////////
-[[ nodiscard ]] auto ::xrn::Logger::get()
-    -> Logger&
-{
-    return Logger::m_logger;
-}
-
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////
-// Constructor
-//
-///////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////
-
-::xrn::Logger::Logger()
-    : m_consoleFile{ ::std::make_shared<::spdlog::sinks::stdout_color_sink_mt>() }
-    , m_outputFile{ ::std::make_shared<::spdlog::sinks::basic_file_sink_mt>("logs/output.txt") }
-    , m_errorFile{ ::std::make_shared<::spdlog::sinks::basic_file_sink_mt>("logs/error.txt") }
-    , m_console{ "consoleSink", m_consoleFile }
-    , m_output{ "outputSink", m_outputFile }
-    , m_error{ "errorSink", m_errorFile }
-{
-    m_consoleFile->set_level(::spdlog::level::trace);
-    m_consoleFile->set_pattern("[%m-%d-%C %H:%M:%S.%f] %v");
-    m_console.set_level(::spdlog::level::trace);
-    m_console.flush_on(::spdlog::level::warn);
-
-    m_outputFile->set_level(::spdlog::level::trace);
-    m_outputFile->set_pattern("[%m-%d-%C %H:%M:%S.%F] [%t] %v");;
-    m_output.set_level(::spdlog::level::trace);
-    m_output.flush_on(::spdlog::level::warn);
-
-    m_errorFile->set_level(::spdlog::level::warn);
-    m_errorFile->set_pattern("[%m-%d-%C %H:%M:%S.%F] [%t] %v");;
-    m_error.set_level(::spdlog::level::warn);
-    m_error.flush_on(::spdlog::level::warn);
-}
-
-::xrn::Logger::~Logger()
-{
-    m_console.flush();
-    m_output.flush();
-    m_error.flush();
-    ::spdlog::shutdown();
-}
-
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////
-// Helpers
-//
-///////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////
 auto ::xrn::Logger::getDate()

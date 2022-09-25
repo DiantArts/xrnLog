@@ -1,3 +1,6 @@
+include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+conan_basic_setup(TARGETS)
+
 foreach(library IN LISTS XRN_LIBRARIES_REQUIREMENTS)
     message(WARNING ${library})
     find_package(${library} REQUIRED)

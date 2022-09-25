@@ -51,6 +51,7 @@ macro(download_dependencies library_versions)
     conan_cmake_autodetect(settings)
     conan_cmake_install(
         PATH_OR_REFERENCE .
+        GENERATOR cmake
         BUILD missing
         SETTINGS ${settings}
     )

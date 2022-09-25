@@ -12,7 +12,7 @@ set(XRN_CXX_VERSION 23)
 set(XRN_PERSONAL_DEPENDENCIES) # include other xrn projects
 set(XRN_LIBRARIES_REQUIRED spdlog/1.10.0)
 set(XRN_LIBRARIES_REQUIREMENTS spdlog fmt) # find_package
-set(XRN_LIBRARIES_DEPENDENCIES spdlog::spdlog fmt::fmt) # target_link_libraries
+set(XRN_LIBRARIES_DEPENDENCIES CONAN_PKG::spdlog CONAN_PKG::fmt) # target_link_libraries
 set(XRN_LIBRARIES_HEADERS spdlog fmt) # include_directories()
 
 set(SPDLOG_BUILD_SHARED OFF)

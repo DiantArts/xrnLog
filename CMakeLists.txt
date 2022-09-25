@@ -6,7 +6,6 @@ cmake_minimum_required(VERSION 3.20 FATAL_ERROR)
 
 # project
 project(CMakeSandbox LANGUAGES CXX)
-set(XRN_BIN_NAME xrnLog)
 set(XRN_CXX_VERSION 23)
 
 # dependencies
@@ -180,6 +179,7 @@ list(REMOVE_ITEM XRN_SOURCES "${XRN_MAIN}")
 # Options
 # =========================================================================
 
+get_filename_component(XRN_BIN_NAME ${CMAKE_CURRENT_LIST_DIR} NAME)
 add_library(${XRN_BIN_NAME}_project_options INTERFACE)
 
 # basic useful actions controlled by the options/

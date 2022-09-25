@@ -1,4 +1,5 @@
 foreach(library IN LISTS XRN_LIBRARIES_REQUIREMENTS)
+    message(WARNING ${library})
     find_package(${library} REQUIRED)
 endforeach()
 

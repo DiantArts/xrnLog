@@ -17,14 +17,14 @@ buildDir=.build
 cxxVersion=23
 buildType=Release
 binaryName=$(basename `git rev-parse --show-toplevel`)
-binaryPath=${buildDir}/sources/${binaryName}
+binaryPath=${buildDir}/sources/bin/${binaryName}
 parallel=$(nproc)
 
 # -------------------------------------------------------------------------------------------------
 
 declare -a listOfDisablable=("clear" "run" "cov" "coverage" "binary" "build" "color" "pch")
 getoptArgShort="hglstmdc"
-getoptArgLong="help,gcc,g\+\+,clang,clang\+\+,setup,test,tests,tests_run,debug,makefile,clean,debug-cmake,type:,version:,compiler:,cc-compiler:,cxx-compiler:,directory:,parallel:"
+getoptArgLong="help,gcc,g\+\+,clang,clang++,setup,test,tests,tests_run,debug,makefile,clean,debug-cmake,type:,version:,compiler:,cc-compiler:,cxx-compiler:,directory:,parallel:"
 
 
 

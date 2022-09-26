@@ -79,10 +79,6 @@ option(ENABLE_SHARED_LIBRARY "Compile the main program as a shared library" OFF)
 
 
 
-
-
-
-
 # =========================================================================
 # Abolute paths
 # =========================================================================

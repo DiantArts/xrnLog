@@ -62,7 +62,7 @@ macro(download_dependencies library_versions)
     foreach(library_name IN LISTS XRN_PERSONAL_DEPENDENCIES)
         MESSAGE(STATUS "Dowloading ${library_name}")
         string(TOLOWER ${library_name} library_dirname)
-            FetchContent_Declare(
+        FetchContent_Declare(
             ${library_dirname}
             GIT_REPOSITORY https://github.com/DiantArts/${library_name}
             GIT_TAG        main

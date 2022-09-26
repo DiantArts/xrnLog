@@ -1,8 +1,9 @@
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup(TARGETS)
 
+include(CMakeFindDependencyMacro)
 foreach(library IN LISTS XRN_LIBRARIES_REQUIREMENTS)
-    find_package(${library} REQUIRED)
+    find_dependency(${library} REQUIRED)
 endforeach()
 
 add_library(XRN_${XRN_BIN_NAME}_BIN_OBJECTS OBJECT ${XRN_MAIN} ${XRN_SOURCES} ${XRN_FRAGMENT} ${XRN_VERTEX} ${XRN_HEADERS})

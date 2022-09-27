@@ -176,11 +176,10 @@ list(REMOVE_ITEM XRN_SOURCES "${XRN_MAIN}")
 # =========================================================================
 
 get_filename_component(XRN_BIN_NAME ${CMAKE_CURRENT_LIST_DIR} NAME)
+string(REPLACE "-src" "-build" XRN_BIN_NAME ${XRN_BIN_NAME})
 
-string(TOLOWER ${XRN_BIN_NAME} XRN_${XRN_BIN_NAME}_DEPENDENCY_DIR)
-set(XRN_${XRN_BIN_NAME}_DEPENDENCY_DIR ${XRN_BUILD_DIR}/_dep/${XRN_${XRN_BIN_NAME}_DEPENDENCY_DIR}-build)
+set(XRN_${XRN_BIN_NAME}_DEPENDENCY_DIR ${XRN_BUILD_DIR}/_dep/${XRN_BIN_NAME})
 set(CMAKE_MODULE_PATH ${XRN_BUILD_DIR} ${XRN_${XRN_BIN_NAME}_DEPENDENCY_DIR})
-message(WARNING ${CMAKE_MODULE_PATH})
 add_library(${XRN_BIN_NAME}_project_options INTERFACE)
 
 # basic useful actions controlled by the options/

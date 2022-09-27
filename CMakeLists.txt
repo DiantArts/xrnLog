@@ -180,6 +180,7 @@ string(REPLACE "-src" "-build" XRN_BIN_NAME ${XRN_BIN_NAME})
 
 set(XRN_${XRN_BIN_NAME}_DEPENDENCY_DIR ${XRN_BUILD_DIR}/_dep/${XRN_BIN_NAME})
 set(CMAKE_MODULE_PATH ${XRN_BUILD_DIR} ${XRN_${XRN_BIN_NAME}_DEPENDENCY_DIR})
+message(WARNING "${CMAKE_MODULE_PATH}")
 add_library(${XRN_BIN_NAME}_project_options INTERFACE)
 
 # basic useful actions controlled by the options/

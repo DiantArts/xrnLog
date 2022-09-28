@@ -1,7 +1,7 @@
 if (CMAKE_CURRENT_LIST_DIR MATCHES "-src/sources$")
     include(${XRN_BUILD_DIR}/_deps/${XRN_BIN_NAME}/conanbuildinfo.cmake)
 else ()
-    include(${CMAKE_CURRENT_LIST_DIR}/conanbuildinfo.cmake)
+    include(${XRN_BUILD_DIR}/conanbuildinfo.cmake)
 endif ()
 conan_basic_setup(TARGETS)
 

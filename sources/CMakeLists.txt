@@ -51,5 +51,4 @@ foreach(library IN LISTS XRN_LIBRARIES_HEADERS)
     include_directories(
         ${${library}_INCLUDE_DIRS}
     )
-    message(WARNING ${${library}_INCLUDE_DIRS})
 endforeach()

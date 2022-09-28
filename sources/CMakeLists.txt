@@ -1,4 +1,5 @@
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+message(WARNING ${CMAKE_BINARY_DIR})
 conan_basic_setup(TARGETS)
 
 include(CMakeFindDependencyMacro)

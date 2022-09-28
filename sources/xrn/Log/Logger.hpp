@@ -1,7 +1,11 @@
 #pragma once
 
+#ifndef SPDLOG_FMT_EXTERNAL
 #define SPDLOG_FMT_EXTERNAL ON
+#endif
+#ifndef SPDLOG_ACTIVE_LEVEL
 #define SPDLOG_ACTIVE_LEVEL SPDLOG_LEVEL_TRACE
+#endif
 #include <spdlog/spdlog.h>
 #include <spdlog/pattern_formatter.h>
 #include <spdlog/async.h>

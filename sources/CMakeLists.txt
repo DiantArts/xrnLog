@@ -1,4 +1,11 @@
-include(${CMAKE_CURRENT_LIST_DIR}/conanbuildinfo.cmake)
+message(WARNING ${CMAKE_CURRENT_LIST_DIR})
+if (CMAKE_CURRENT_LIST_DIR MATCHES "-src/sources$")
+    message(WARNING "yup")
+    include(${XRN_BUILD_DIR}/_deps/${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+else ()
+    message(WARNING "nop")
+    include(${CMAKE_CURRENT_LIST_DIR}/conanbuildinfo.cmake)
+endif ()
 conan_basic_setup(TARGETS)
 
 include(CMakeFindDependencyMacro)

@@ -73,7 +73,7 @@ option(ENABLE_CMAKE_DEBUG "Enable debug outputs of cmake's makefiles" ON)
 
 # Binary form
 option(ENABLE_OUTPUT_DIR "Puts every ouput binaries in the '${XRN_OUTPUT_DIR}' directory" OFF)
-option(ENABLE_BINARY "Compile the main program as a binarry" ON)
+option(ENABLE_BINARY "Compile the main program as a binarry" OFF)
 option(ENABLE_STATIC_LIBRARY "Compile the main program as a static library" OFF)
 option(ENABLE_SHARED_LIBRARY "Compile the main program as a shared library" OFF)
 

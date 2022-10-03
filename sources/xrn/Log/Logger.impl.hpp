@@ -296,7 +296,8 @@ template <
 [[ nodiscard ]] auto ::xrn::Logger::get()
     -> Logger&
 {
-    return Logger::m_logger;
+    static ::xrn::Logger logger;
+    return logger;
 }
 
 
@@ -542,5 +543,3 @@ auto ::xrn::Logger::getDate()
 
     return output;
 }
-
-::xrn::Logger xrn::Logger::m_logger;

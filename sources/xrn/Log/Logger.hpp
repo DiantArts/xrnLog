@@ -205,8 +205,6 @@ private:
 
 private:
 
-    static ::xrn::Logger m_logger;
-
     ::std::shared_ptr<::spdlog::sinks::stdout_color_sink_mt> m_consoleFile;
     ::std::shared_ptr<::spdlog::sinks::basic_file_sink_mt> m_outputFile;
     ::std::shared_ptr<::spdlog::sinks::basic_file_sink_mt> m_errorFile;

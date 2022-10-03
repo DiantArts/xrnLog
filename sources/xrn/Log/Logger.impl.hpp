@@ -293,7 +293,7 @@ template <
 }
 
 ///////////////////////////////////////////////////////////////////////////
-[[ nodiscard ]] auto ::xrn::Logger::get()
+auto ::xrn::Logger::get()
     -> Logger&
 {
     static ::xrn::Logger logger;

@@ -105,13 +105,11 @@ default_setup_extra()
 # =========================================================================
 
 # sub projects
-add_subdirectory(${XRN_SOURCES_DIR})
+if (ENABLE_TESTING)
+    if (NOT CMAKE_CURRENT_LIST_DIR MATCHES "-src/sources$")
+        enable_tests()
+    endif ()
+else ()
+    add_subdirectory(${XRN_SOURCES_DIR})
+endif ()
 
-
-
-# =========================================================================
-# Tests
-# =========================================================================
-
-# tests
-enable_tests()

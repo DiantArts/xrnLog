@@ -1,5 +1,5 @@
 #include <pch.hpp>
 #include <catch2/catch.hpp>
 
-TEST_CASE("blankTest")
+TEST_CASE(" xrnLog :: blankTest")
 {}

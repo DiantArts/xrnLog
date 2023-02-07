@@ -228,7 +228,7 @@ template <
             filepath,
             functionName,
             lineNumber,
-            Logger::Level::fatalError,
+            Logger::Level::error,
             false,
             subformat,
             ::std::forward<decltype(args)>(args)...
@@ -262,7 +262,7 @@ template <
             filepath,
             functionName,
             lineNumber,
-            Logger::Level::fatalError,
+            Logger::Level::error,
             false,
             subformat,
             ::std::forward<decltype(args)>(args)...
@@ -285,7 +285,7 @@ template <
         filepath,
         functionName,
         lineNumber,
-        Logger::Level::fatalError,
+        Logger::Level::error,
         true,
         subformat,
         ::std::forward<decltype(args)>(args)...

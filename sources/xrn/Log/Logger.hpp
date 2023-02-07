@@ -246,10 +246,16 @@ private:
     throw ::std::logic_error{ "exception shoulh have been already thrown. Issue with XRN_THROW" }
 
 ///////////////////////////////////////////////////////////////////////////
-/// \brief Same as assert from <cassert>
+/// \brief Same as assert from <cassert> but just print error
 ///////////////////////////////////////////////////////////////////////////
 #define XRN_ASSERT(condition, ...) \
     ::xrn::Logger::get().massert((condition), __FILE__, __FUNCTION__, __LINE__, __VA_ARGS__)
+
+///////////////////////////////////////////////////////////////////////////
+/// \brief Same as assert from <cassert>
+///////////////////////////////////////////////////////////////////////////
+#define XRN_FATAL_ASSERT(condition, ...) \
+    ::xrn::Logger::get().massert((condition), __FILE__, __FUNCTION__, __LINE__, ::xrn::Logger::Level::fatalError, __VA_ARGS__)
 
 
 

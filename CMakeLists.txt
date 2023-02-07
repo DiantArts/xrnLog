@@ -24,6 +24,7 @@ set(SPDLOG_BUILD_TESTS OFF)
 set(XRN_TOOLCHAIN_DIR "${CMAKE_SOURCE_DIR}/.toolchain")
 set(XRN_TOOLCHAIN_DETAILS_DIR "${XRN_TOOLCHAIN_DIR}/.details")
 set(XRN_SOURCES_DIR "sources")
+set(XRN_EXTERNALS_DIR "externals")
 set(XRN_TESTS_DIR "tests")
 set(XRN_OUTPUT_DIR "binaries")
 

@@ -19,6 +19,7 @@ auto main()
     XRN_LOG(::xrn::Logger::Level::trace, "trace");
     XRN_LOG(::xrn::Logger::Level::debug, "debug");
     XRN_LOG(::xrn::Logger::Level::debug);
+    XRN_DEBUG();
     XRN_LOG(::xrn::Logger::Level::warning, "warning");
     XRN_LOG(::xrn::Logger::Level::error, "error");
     XRN_LOG(::xrn::Logger::Level::fatalError, "fatalError");

@@ -297,41 +297,46 @@ private:
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////
+/// \brief Allows empty va_args
+///////////////////////////////////////////////////////////////////////////
+#define VA_ARGS(...) , ##__VA_ARGS__
+
+///////////////////////////////////////////////////////////////////////////
 /// \brief Output logs
 ///////////////////////////////////////////////////////////////////////////
 #define XRN_LOG(...) \
-    ::xrn::Logger::get().log(__FILE__, __FUNCTION__, __LINE__, __VA_ARGS__)
+    ::xrn::Logger::get().log(__FILE__, __FUNCTION__, __LINE__ VA_ARGS(__VA_ARGS__))
 
 ///////////////////////////////////////////////////////////////////////////
 /// \brief Output logs
 ///////////////////////////////////////////////////////////////////////////
 #define XRN_DEBUG(...) \
-    ::xrn::Logger::get().log(__FILE__, __FUNCTION__, __LINE__, ::xrn::Logger::Level::debug, __VA_ARGS__)
+    ::xrn::Logger::get().log(__FILE__, __FUNCTION__, __LINE__, ::xrn::Logger::Level::debug VA_ARGS(__VA_ARGS__))
 
 ///////////////////////////////////////////////////////////////////////////
 /// \brief Output logs
 ///////////////////////////////////////////////////////////////////////////
 #define XRN_ERROR(...) \
-    ::xrn::Logger::get().log(__FILE__, __FUNCTION__, __LINE__, ::xrn::Logger::Level::error, __VA_ARGS__)
+    ::xrn::Logger::get().log(__FILE__, __FUNCTION__, __LINE__, ::xrn::Logger::Level::error VA_ARGS(__VA_ARGS__))
 
 ///////////////////////////////////////////////////////////////////////////
 /// \brief Throws a runtime_error with the right output
 ///////////////////////////////////////////////////////////////////////////
 #define XRN_THROW(...) \
-    ::xrn::Logger::get().log(__FILE__, __FUNCTION__, __LINE__, ::xrn::Logger::Level::fatalError, __VA_ARGS__); \
+    ::xrn::Logger::get().log(__FILE__, __FUNCTION__, __LINE__, ::xrn::Logger::Level::fatalError VA_ARGS(__VA_ARGS__)); \
     throw ::std::logic_error{ "exception shoulh have been already thrown. Issue with XRN_THROW" }
 
 ///////////////////////////////////////////////////////////////////////////
 /// \brief Same as assert from <cassert> but just print error
 ///////////////////////////////////////////////////////////////////////////
 #define XRN_ASSERT(condition, ...) \
-    ::xrn::Logger::get().massert((condition), __FILE__, __FUNCTION__, __LINE__, __VA_ARGS__)
+    ::xrn::Logger::get().massert((condition), __FILE__, __FUNCTION__, __LINE__ VA_ARGS(__VA_ARGS__))
 
 ///////////////////////////////////////////////////////////////////////////
 /// \brief Same as assert from <cassert>
 ///////////////////////////////////////////////////////////////////////////
 #define XRN_FATAL_ASSERT(condition, ...) \
-    ::xrn::Logger::get().massert((condition), __FILE__, __FUNCTION__, __LINE__, ::xrn::Logger::Level::fatalError, __VA_ARGS__)
+    ::xrn::Logger::get().massert((condition), __FILE__, __FUNCTION__, __LINE__, ::xrn::Logger::Level::fatalError VA_ARGS(__VA_ARGS__))
 
 
 

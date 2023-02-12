@@ -2,11 +2,251 @@
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
+// No output
+//
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+template <
+    typename... Args
+> void ::xrn::Logger::log(
+    const ::std::string_view filepath,
+    const ::std::string_view functionName,
+    const ::std::size_t lineNumber,
+    const Logger::Level level
+)
+{
+#if defined(NO_DEBUG)
+    if (level == Logger::Level::debug) {
+        return this->logImpl(
+            filepath,
+            functionName,
+            lineNumber,
+            level,
+            false
+        );
+    }
+#endif // ifdef NO_DEBUG
+    return this->logImpl(
+        filepath,
+        functionName,
+        lineNumber,
+        level,
+        true
+    );
+}
+
+template <
+    typename... Args
+> void ::xrn::Logger::log(
+    const ::std::string_view filepath,
+    const ::std::string_view functionName,
+    const ::std::size_t lineNumber
+)
+{
+    return this->logImpl(
+        filepath,
+        functionName,
+        lineNumber,
+        Logger::Level::none,
+        true
+    );
+}
+
+///////////////////////////////////////////////////////////////////////////
+template <
+    typename... Args
+> void ::xrn::Logger::massert(
+    const bool condition,
+    const ::std::string_view filepath,
+    const ::std::string_view functionName,
+    const ::std::size_t lineNumber,
+    Logger::Level level
+)
+{
+#if defined(PRINT_DEBUG) && defined(NO_DEBUG)
+    if (level == Logger::Level::debug) {
+        if (condition) {
+            return this->logImpl(
+                filepath,
+                functionName,
+                lineNumber,
+                Logger::Level::success,
+                false
+            );
+        } else {
+            return this->logImpl(
+                filepath,
+                functionName,
+                lineNumber,
+                level,
+                false
+            );
+        }
+    } else if (condition) {
+        return this->logImpl(
+            filepath,
+            functionName,
+            lineNumber,
+            Logger::Level::success,
+            true
+        );
+    } else {
+        return this->logImpl(
+            filepath,
+            functionName,
+            lineNumber,
+            level,
+            false
+        );
+    }
+#elif defined(PRINT_DEBUG)
+    if (condition) {
+        return this->logImpl(
+            filepath,
+            functionName,
+            lineNumber,
+            Logger::Level::success,
+            true
+        );
+    }
+#elif defined(NO_DEBUG)
+    if (level == Logger::Level::debug) {
+        if (condition) {
+            return this->logImpl(
+                filepath,
+                functionName,
+                lineNumber,
+                Logger::Level::success,
+                false
+            );
+        } else {
+            return this->logImpl(
+                filepath,
+                functionName,
+                lineNumber,
+                level,
+                false
+            );
+        }
+    } else if (condition) {
+        return this->logImpl(
+            filepath,
+            functionName,
+            lineNumber,
+            Logger::Level::success,
+            false
+        );
+    } else {
+        return this->logImpl(
+            filepath,
+            functionName,
+            lineNumber,
+            level,
+            false
+        );
+    }
+#else
+    if (condition) {
+        return this->logImpl(
+            filepath,
+            functionName,
+            lineNumber,
+            Logger::Level::success,
+            false
+        );
+    }
+#endif
+    return this->logImpl(
+        filepath,
+        functionName,
+        lineNumber,
+        level,
+        true
+    );
+}
+
+template <
+    typename... Args
+> void ::xrn::Logger::massert(
+    const bool condition,
+    const ::std::string_view filepath,
+    const ::std::string_view functionName,
+    const ::std::size_t lineNumber
+)
+{
+#if defined(PRINT_DEBUG) && defined(NO_DEBUG)
+    if (condition) {
+        return this->logImpl(
+            filepath,
+            functionName,
+            lineNumber,
+            Logger::Level::success,
+            true
+        );
+    } else {
+        return this->logImpl(
+            filepath,
+            functionName,
+            lineNumber,
+            Logger::Level::error,
+            false
+        );
+    }
+#elif defined(PRINT_DEBUG)
+    if (condition) {
+        return this->logImpl(
+            filepath,
+            functionName,
+            lineNumber,
+            Logger::Level::success,
+            true
+        );
+    }
+#elif defined(NO_DEBUG)
+    if (condition) {
+        return this->logImpl(
+            filepath,
+            functionName,
+            lineNumber,
+            Logger::Level::success,
+            false
+        );
+    } else {
+        return this->logImpl(
+            filepath,
+            functionName,
+            lineNumber,
+            Logger::Level::error,
+            false
+        );
+    }
+#else
+    if (condition) {
+        return this->logImpl(
+            filepath,
+            functionName,
+            lineNumber,
+            Logger::Level::success,
+            false
+        );
+    }
+#endif
+    return this->logImpl(
+        filepath,
+        functionName,
+        lineNumber,
+        Logger::Level::error,
+        true
+    );
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
 // Log
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////
 
 template <
     typename... Args
@@ -349,6 +589,135 @@ auto ::xrn::Logger::get()
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////
+template <
+    typename... Args
+> void ::xrn::Logger::logImpl(
+    const ::std::string_view filepath,
+    const ::std::string_view functionName,
+    const ::std::size_t lineNumber,
+    const Logger::Level level,
+    const bool displayOnConsole
+)
+{
+    // call position
+    auto relaviteFilepath{
+        ::std::filesystem::relative(::std::filesystem::path{ filepath }, ".").generic_string()
+    };
+    if (relaviteFilepath.starts_with("sources/")) {
+        relaviteFilepath = relaviteFilepath.substr(8);
+    }
+    auto callPosition{
+        ::fmt::format(::fmt::emphasis::bold,"{}:{}({})", relaviteFilepath, lineNumber, functionName)
+    };
+
+    // log level
+    ::std::string logSpecifier;
+    switch (level) {
+    case Logger::Level::none: // no extra output. Should be avoided
+        m_output.trace("[{}]", callPosition);
+        return;
+    case Logger::Level::success: // is successful
+        logSpecifier = ::fmt::format(
+            ::fmt::emphasis::bold | ::fmt::bg(fmt::color::chartreuse) | ::fmt::fg(fmt::color::black),
+            "SUCCESS"
+        );
+        break;
+    case Logger::Level::note: // user driven (configuration operations)
+        logSpecifier = ::fmt::format(
+            ::fmt::emphasis::bold | ::fmt::fg(fmt::color::gold),
+            "note"
+        );
+        break;
+    case Logger::Level::info: // user driven (regularly scheduled operations)
+        logSpecifier = ::fmt::format(
+            ::fmt::emphasis::bold | ::fmt::fg(fmt::color::aqua),
+            "info"
+        );
+        break;
+    case Logger::Level::trace: // tracks potential bugs
+        logSpecifier = ::fmt::format(
+            ::fmt::emphasis::bold | ::fmt::fg(fmt::color::tomato),
+            "trace"
+        );
+        break;
+    case Logger::Level::debug: // (disabled with NO_DEBUG)
+        logSpecifier = ::fmt::format(
+            ::fmt::emphasis::bold | ::fmt::fg(fmt::color::fuchsia),
+            "debug"
+        );
+        break;
+    case Logger::Level::warning: // can potential become an error
+        logSpecifier = ::fmt::format(
+            ::fmt::emphasis::bold | ::fmt::fg(fmt::color::red),
+            "warning"
+        );
+        break;
+    case Logger::Level::error: // error that cannot be recovered but does not throw
+        logSpecifier = ::fmt::format(
+            ::fmt::emphasis::bold | ::fmt::bg(fmt::color::red) | ::fmt::fg(fmt::color::black),
+            "FAILURE"
+        );
+        break;
+    case Logger::Level::fatal: // error that cannot be recovered, throws an exception
+    case Logger::Level::fatalError: // same as fatal
+        logSpecifier = ::fmt::format(
+            ::fmt::emphasis::bold | ::fmt::bg(fmt::color::red) | ::fmt::fg(fmt::color::black),
+            "FATAL"
+        );
+        m_output.error("[{}] [{}]", logSpecifier, callPosition);
+        m_error.error("[{}] [{}]", logSpecifier, callPosition);
+        throw ::std::runtime_error{
+            ::fmt::format("\n[{}] [{}]", logSpecifier, callPosition)
+        };
+    };
+
+    switch (level) {
+    case Logger::Level::none: // no extra output. Should be avoided
+    case Logger::Level::success: // is successful
+    case Logger::Level::note: // user driven (configuration operations)
+        if (displayOnConsole) {
+            m_console.trace("[{}]", logSpecifier);
+        }
+        m_output.trace("[{}] [{}]", logSpecifier, callPosition);
+        break;
+    case Logger::Level::info: // user driven (regularly scheduled operations)
+        if (displayOnConsole) {
+            m_console.info("[{}]", logSpecifier);
+        }
+        m_output.trace("[{}] [{}]", logSpecifier, callPosition);
+        break;
+    case Logger::Level::trace: // tracks potential bugs
+        if (displayOnConsole) {
+            m_console.trace("[{}] [{}]", logSpecifier, callPosition);
+        }
+        m_output.trace("[{}] [{}]", logSpecifier, callPosition);
+        break;
+    case Logger::Level::debug: // (disabled with NO_DEBUG)
+        if (displayOnConsole) {
+            m_console.debug("[{}] [{}]", logSpecifier, callPosition);
+        }
+        m_output.debug("[{}] [{}]", logSpecifier, callPosition);
+        break;
+    case Logger::Level::warning: // can potential become an error
+        if (displayOnConsole) {
+            m_console.warn("[{}] [{}]", logSpecifier, callPosition);
+        }
+        m_output.warn("[{}] [{}]", logSpecifier, callPosition);
+        m_error.warn("[{}] [{}]", logSpecifier, callPosition);
+        break;
+    case Logger::Level::error: // error that cannot be recovered but does not throw
+        if (displayOnConsole) {
+            m_console.error("[{}] [{}]", logSpecifier, callPosition);
+        }
+        m_output.error("[{}] [{}]", logSpecifier, callPosition);
+        m_error.error("[{}] [{}]", logSpecifier, callPosition);
+        break;
+    default:
+        throw ::std::runtime_error{ "This throw should never been used" };
+    };
+}
 
 ///////////////////////////////////////////////////////////////////////////
 template <

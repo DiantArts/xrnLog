@@ -558,7 +558,7 @@ auto ::xrn::Logger::get()
     , m_error{ "errorSink", m_errorFile }
 {
     m_consoleFile->set_level(::spdlog::level::trace);
-    m_consoleFile->set_pattern("[%m-%d-%C %H:%M:%S.%f] %v");
+    m_consoleFile->set_pattern("%v");
     m_console.set_level(::spdlog::level::trace);
     m_console.flush_on(::spdlog::level::warn);
 

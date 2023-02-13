@@ -210,6 +210,37 @@ public:
     );
 
     ///////////////////////////////////////////////////////////////////////////
+    /// \brief Assert and outputs the message with the right format if needed
+    ///////////////////////////////////////////////////////////////////////////
+    template <
+        typename... Args
+    > void sassert(
+        bool condition,
+        ::std::string_view filepath,
+        ::std::string_view functionName,
+        ::std::size_t lineNumber,
+        Logger::Level level,
+        ::fmt::format_string<Args...> subformat,
+        Args&&... args
+    );
+
+    ///////////////////////////////////////////////////////////////////////////
+    /// \brief Assert and outputs the message with the right format if needed
+    ///
+    /// (level fatalError)
+    ///////////////////////////////////////////////////////////////////////////
+    template <
+        typename... Args
+    > void sassert(
+        bool condition,
+        ::std::string_view filepath,
+        ::std::string_view functionName,
+        ::std::size_t lineNumber,
+        ::fmt::format_string<Args...> subformat,
+        Args&&... args
+    );
+
+    ///////////////////////////////////////////////////////////////////////////
     ///
     ///////////////////////////////////////////////////////////////////////////
     [[ nodiscard ]] static inline auto get()
@@ -331,12 +362,23 @@ private:
 ///////////////////////////////////////////////////////////////////////////
 #define XRN_ASSERT(condition, ...) \
     ::xrn::Logger::get().massert((condition), __FILE__, __FUNCTION__, __LINE__ VA_ARGS(__VA_ARGS__))
+///////////////////////////////////////////////////////////////////////////
+/// \brief Same as assert from <cassert> but just print error
+///////////////////////////////////////////////////////////////////////////
+#define XRN_SASSERT(condition, ...) \
+    ::xrn::Logger::get().sassert((condition), __FILE__, __FUNCTION__, __LINE__ VA_ARGS(__VA_ARGS__))
 
 ///////////////////////////////////////////////////////////////////////////
 /// \brief Same as assert from <cassert>
 ///////////////////////////////////////////////////////////////////////////
 #define XRN_FATAL_ASSERT(condition, ...) \
     ::xrn::Logger::get().massert((condition), __FILE__, __FUNCTION__, __LINE__, ::xrn::Logger::Level::fatalError VA_ARGS(__VA_ARGS__))
+
+///////////////////////////////////////////////////////////////////////////
+/// \brief Same as assert from <cassert>
+///////////////////////////////////////////////////////////////////////////
+#define XRN_FATAL_SASSERT(condition, ...) \
+    ::xrn::Logger::get().sassert((condition), __FILE__, __FUNCTION__, __LINE__, ::xrn::Logger::Level::fatalError VA_ARGS(__VA_ARGS__))
 
 
 

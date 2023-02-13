@@ -11,6 +11,12 @@
 auto main()
     -> int
 {
+    XRN_ASSERT(true, "true");
+    XRN_ASSERT(false, "false");
+    XRN_SASSERT(true, "true");
+    XRN_SASSERT(false, "false");
+    return 0;
+
     XRN_LOG("not specified");
     XRN_LOG(::xrn::Logger::Level::none, "none o");
     XRN_LOG(::xrn::Logger::Level::success, "success");

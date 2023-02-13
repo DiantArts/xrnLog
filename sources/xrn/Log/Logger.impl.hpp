@@ -533,6 +533,104 @@ template <
 }
 
 ///////////////////////////////////////////////////////////////////////////
+template <
+    typename... Args
+> void ::xrn::Logger::sassert(
+    const bool condition,
+    const ::std::string_view filepath,
+    const ::std::string_view functionName,
+    const ::std::size_t lineNumber,
+    Logger::Level level,
+    const ::fmt::format_string<Args...> subformat,
+    Args&&... args
+)
+{
+#if defined(FORCE_PRINT)
+    if (condition) {
+        return this->logImpl(
+            filepath,
+            functionName,
+            lineNumber,
+            Logger::Level::success,
+            true,
+            subformat,
+            ::std::forward<decltype(args)>(args)...
+        );
+    } else {
+        return this->logImpl(
+            filepath,
+            functionName,
+            lineNumber,
+            level,
+            true,
+            subformat,
+            ::std::forward<decltype(args)>(args)...
+        );
+    }
+#else
+    if (!condition) {
+        return this->logImpl(
+            filepath,
+            functionName,
+            lineNumber,
+            Logger::Level::success,
+            true,
+            subformat,
+            ::std::forward<decltype(args)>(args)...
+        );
+    }
+#endif
+}
+
+template <
+    typename... Args
+> void ::xrn::Logger::sassert(
+    const bool condition,
+    const ::std::string_view filepath,
+    const ::std::string_view functionName,
+    const ::std::size_t lineNumber,
+    const ::fmt::format_string<Args...> subformat,
+    Args&&... args
+)
+{
+#if defined(FORCE_PRINT)
+    if (condition) {
+        return this->logImpl(
+            filepath,
+            functionName,
+            lineNumber,
+            Logger::Level::success,
+            true,
+            subformat,
+            ::std::forward<decltype(args)>(args)...
+        );
+    } else {
+        return this->logImpl(
+            filepath,
+            functionName,
+            lineNumber,
+            Logger::Level::error,
+            true,
+            subformat,
+            ::std::forward<decltype(args)>(args)...
+        );
+    }
+#else
+    if (!condition) {
+        return this->logImpl(
+            filepath,
+            functionName,
+            lineNumber,
+            Logger::Level::error,
+            true,
+            subformat,
+            ::std::forward<decltype(args)>(args)...
+        );
+    }
+#endif
+}
+
+///////////////////////////////////////////////////////////////////////////
 auto ::xrn::Logger::get()
     -> Logger&
 {

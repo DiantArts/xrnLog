@@ -112,6 +112,7 @@ using ::std::literals::string_view_literals::operator""sv;
 using ::std::chrono_literals::operator""ms;
 
 #define PRINT_DEBUG
+// #define FORCE_PRINT
 // #define NO_DEBUG
 #include <xrn/Log.hpp>
 

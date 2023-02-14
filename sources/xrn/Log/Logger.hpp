@@ -336,49 +336,98 @@ private:
 /// \brief Output logs
 ///////////////////////////////////////////////////////////////////////////
 #define XRN_LOG(...) \
-    ::xrn::Logger::get().log(__FILE__, __FUNCTION__, __LINE__ VA_ARGS(__VA_ARGS__))
+    ::xrn::Logger::get().log(__FILE__, __FUNCTION__, __LINE__ VA_ARGS(__VA_ARGS__));
+
+///////////////////////////////////////////////////////////////////////////
+/// \brief Output logs
+///////////////////////////////////////////////////////////////////////////
+#define XRN_SUCCESS(...) \
+    ::xrn::Logger::get().log(__FILE__, __FUNCTION__, __LINE__, ::xrn::Logger::Level::success VA_ARGS(__VA_ARGS__));
+
+///////////////////////////////////////////////////////////////////////////
+/// \brief Output logs
+///////////////////////////////////////////////////////////////////////////
+#define XRN_NOTE(...) \
+    ::xrn::Logger::get().log(__FILE__, __FUNCTION__, __LINE__, ::xrn::Logger::Level::note VA_ARGS(__VA_ARGS__));
+
+///////////////////////////////////////////////////////////////////////////
+/// \brief Output logs
+///////////////////////////////////////////////////////////////////////////
+#define XRN_INFO(...) \
+    ::xrn::Logger::get().log(__FILE__, __FUNCTION__, __LINE__, ::xrn::Logger::Level::info VA_ARGS(__VA_ARGS__));
+
+///////////////////////////////////////////////////////////////////////////
+/// \brief Output logs
+///////////////////////////////////////////////////////////////////////////
+#define XRN_TRACE(...) \
+    ::xrn::Logger::get().log(__FILE__, __FUNCTION__, __LINE__, ::xrn::Logger::Level::trace VA_ARGS(__VA_ARGS__));
 
 ///////////////////////////////////////////////////////////////////////////
 /// \brief Output logs
 ///////////////////////////////////////////////////////////////////////////
 #define XRN_DEBUG(...) \
-    ::xrn::Logger::get().log(__FILE__, __FUNCTION__, __LINE__, ::xrn::Logger::Level::debug VA_ARGS(__VA_ARGS__))
+    ::xrn::Logger::get().log(__FILE__, __FUNCTION__, __LINE__, ::xrn::Logger::Level::debug VA_ARGS(__VA_ARGS__));
+
+///////////////////////////////////////////////////////////////////////////
+/// \brief Output logs
+///////////////////////////////////////////////////////////////////////////
+#define XRN_WARN(...) \
+    ::xrn::Logger::get().log(__FILE__, __FUNCTION__, __LINE__, ::xrn::Logger::Level::warning VA_ARGS(__VA_ARGS__));
+
+///////////////////////////////////////////////////////////////////////////
+/// \brief Output logs
+///////////////////////////////////////////////////////////////////////////
+#define XRN_WARNING(...) \
+    ::xrn::Logger::get().log(__FILE__, __FUNCTION__, __LINE__, ::xrn::Logger::Level::warning VA_ARGS(__VA_ARGS__));
 
 ///////////////////////////////////////////////////////////////////////////
 /// \brief Output logs
 ///////////////////////////////////////////////////////////////////////////
 #define XRN_ERROR(...) \
-    ::xrn::Logger::get().log(__FILE__, __FUNCTION__, __LINE__, ::xrn::Logger::Level::error VA_ARGS(__VA_ARGS__))
+    ::xrn::Logger::get().log(__FILE__, __FUNCTION__, __LINE__, ::xrn::Logger::Level::error VA_ARGS(__VA_ARGS__));
+
+///////////////////////////////////////////////////////////////////////////
+/// \brief Output logs
+///////////////////////////////////////////////////////////////////////////
+#define XRN_FATAL(...) \
+    ::xrn::Logger::get().log(__FILE__, __FUNCTION__, __LINE__, ::xrn::Logger::Level::fatal VA_ARGS(__VA_ARGS__));
+
+///////////////////////////////////////////////////////////////////////////
+/// \brief Output logs
+///////////////////////////////////////////////////////////////////////////
+#define XRN_FATAL_ERROR(...) \
+    ::xrn::Logger::get().log(__FILE__, __FUNCTION__, __LINE__, ::xrn::Logger::Level::fatal VA_ARGS(__VA_ARGS__));
 
 ///////////////////////////////////////////////////////////////////////////
 /// \brief Throws a runtime_error with the right output
 ///////////////////////////////////////////////////////////////////////////
 #define XRN_THROW(...) \
     ::xrn::Logger::get().log(__FILE__, __FUNCTION__, __LINE__, ::xrn::Logger::Level::fatalError VA_ARGS(__VA_ARGS__)); \
-    throw ::std::logic_error{ "exception shoulh have been already thrown. Issue with XRN_THROW" }
+    throw ::std::logic_error{ "exception shoulh have been already thrown. Issue with XRN_THROW" };
 
 ///////////////////////////////////////////////////////////////////////////
 /// \brief Same as assert from <cassert> but just print error
 ///////////////////////////////////////////////////////////////////////////
 #define XRN_ASSERT(condition, ...) \
-    ::xrn::Logger::get().massert((condition), __FILE__, __FUNCTION__, __LINE__ VA_ARGS(__VA_ARGS__))
+    ::xrn::Logger::get().massert((condition), __FILE__, __FUNCTION__, __LINE__ VA_ARGS(__VA_ARGS__));
+
 ///////////////////////////////////////////////////////////////////////////
 /// \brief Same as assert from <cassert> but just print error
 ///////////////////////////////////////////////////////////////////////////
 #define XRN_SASSERT(condition, ...) \
-    ::xrn::Logger::get().sassert((condition), __FILE__, __FUNCTION__, __LINE__ VA_ARGS(__VA_ARGS__))
+    ::xrn::Logger::get().sassert((condition), __FILE__, __FUNCTION__, __LINE__ VA_ARGS(__VA_ARGS__));
 
 ///////////////////////////////////////////////////////////////////////////
 /// \brief Same as assert from <cassert>
 ///////////////////////////////////////////////////////////////////////////
 #define XRN_FATAL_ASSERT(condition, ...) \
-    ::xrn::Logger::get().massert((condition), __FILE__, __FUNCTION__, __LINE__, ::xrn::Logger::Level::fatalError VA_ARGS(__VA_ARGS__))
+    ::xrn::Logger::get().massert((condition), __FILE__, __FUNCTION__, __LINE__, ::xrn::Logger::Level::fatalError VA_ARGS(__VA_ARGS__));
 
 ///////////////////////////////////////////////////////////////////////////
 /// \brief Same as assert from <cassert>
 ///////////////////////////////////////////////////////////////////////////
 #define XRN_FATAL_SASSERT(condition, ...) \
-    ::xrn::Logger::get().sassert((condition), __FILE__, __FUNCTION__, __LINE__, ::xrn::Logger::Level::fatalError VA_ARGS(__VA_ARGS__))
+    ::xrn::Logger::get().sassert((condition), __FILE__, __FUNCTION__, __LINE__, ::xrn::Logger::Level::fatalError VA_ARGS(__VA_ARGS__));
 
 
 

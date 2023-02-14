@@ -64,7 +64,7 @@ template <
     Logger::Level level
 )
 {
-#if defined(PRINT_DEBUG) && defined(NO_DEBUG)
+#if defined(PRINT_ASSERTS) && defined(NO_DEBUG)
     if (level == Logger::Level::debug) {
         if (condition) {
             return this->logImpl(
@@ -100,7 +100,7 @@ template <
             false
         );
     }
-#elif defined(PRINT_DEBUG)
+#elif defined(PRINT_ASSERTS)
     if (condition) {
         return this->logImpl(
             filepath,
@@ -175,7 +175,7 @@ template <
     const ::std::size_t lineNumber
 )
 {
-#if defined(PRINT_DEBUG) && defined(NO_DEBUG)
+#if defined(PRINT_ASSERTS) && defined(NO_DEBUG)
     if (condition) {
         return this->logImpl(
             filepath,
@@ -193,7 +193,7 @@ template <
             false
         );
     }
-#elif defined(PRINT_DEBUG)
+#elif defined(PRINT_ASSERTS)
     if (condition) {
         return this->logImpl(
             filepath,
@@ -317,7 +317,7 @@ template <
     Args&&... args
 )
 {
-#if defined(PRINT_DEBUG) && defined(NO_DEBUG)
+#if defined(PRINT_ASSERTS) && defined(NO_DEBUG)
     if (level == Logger::Level::debug) {
         if (condition) {
             return this->logImpl(
@@ -361,7 +361,7 @@ template <
             ::std::forward<decltype(args)>(args)...
         );
     }
-#elif defined(PRINT_DEBUG)
+#elif defined(PRINT_ASSERTS)
     if (condition) {
         return this->logImpl(
             filepath,
@@ -452,7 +452,7 @@ template <
     Args&&... args
 )
 {
-#if defined(PRINT_DEBUG) && defined(NO_DEBUG)
+#if defined(PRINT_ASSERTS) && defined(NO_DEBUG)
     if (condition) {
         return this->logImpl(
             filepath,
@@ -474,7 +474,7 @@ template <
             ::std::forward<decltype(args)>(args)...
         );
     }
-#elif defined(PRINT_DEBUG)
+#elif defined(PRINT_ASSERTS)
     if (condition) {
         return this->logImpl(
             filepath,

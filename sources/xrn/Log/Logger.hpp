@@ -22,7 +22,7 @@ namespace xrn {
 ///
 /// \include Logger.hpp <Logger.hpp>
 ///
-/// Output varies if NO_DEBUG (no debug) that disable asserts and PRINT_DEBUG
+/// Output varies if NO_DEBUG (no debug) that disable asserts and PRINT_ASSERTS
 /// that prints "success" if the assert succeeded.
 /// If FORCE_PRINT overrides silent actions (like SASSERT) and print on
 /// success.

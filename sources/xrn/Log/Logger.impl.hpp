@@ -703,8 +703,16 @@ template <
     auto relaviteFilepath{
         ::std::filesystem::relative(::std::filesystem::path{ filepath }, ".").generic_string()
     };
+    ::fmt::print("{}\n", "heo");
     if (relaviteFilepath.starts_with("sources/")) {
         relaviteFilepath = relaviteFilepath.substr(8);
+    } else if (auto pos{ relaviteFilepath.find("/sources/") }; pos != ::std::string::npos) {
+        if (auto pos2{ relaviteFilepath.find("/xrn") }; pos2 != ::std::string::npos) {
+            auto name{ relaviteFilepath.substr(pos2 + 1, pos - (pos2 + 1)) };
+            relaviteFilepath = name + ':' + relaviteFilepath.substr(pos + 9);
+        } else {
+            relaviteFilepath = relaviteFilepath.substr(pos + 9);
+        }
     }
     auto callPosition{
         ::fmt::format(::fmt::emphasis::bold,"{}:{}({})", relaviteFilepath, lineNumber, functionName)
@@ -836,6 +844,13 @@ template <
     };
     if (relaviteFilepath.starts_with("sources/")) {
         relaviteFilepath = relaviteFilepath.substr(8);
+    } else if (auto pos{ relaviteFilepath.find("/sources/") }; pos != ::std::string::npos) {
+        if (auto pos2{ relaviteFilepath.find("/xrn") }; pos2 != ::std::string::npos) {
+            auto name{ relaviteFilepath.substr(pos2 + 1, pos - (pos2 + 1)) };
+            relaviteFilepath = name + ':' + relaviteFilepath.substr(pos + 9);
+        } else {
+            relaviteFilepath = relaviteFilepath.substr(pos + 9);
+        }
     }
     auto callPosition{
         ::fmt::format(::fmt::emphasis::bold,"{}:{}({})", relaviteFilepath, lineNumber, functionName)

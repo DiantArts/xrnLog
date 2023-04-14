@@ -573,7 +573,7 @@ template <
             filepath,
             functionName,
             lineNumber,
-            Logger::Level::success,
+            level,
             true,
             subformat,
             ::std::forward<decltype(args)>(args)...

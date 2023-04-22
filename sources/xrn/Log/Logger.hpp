@@ -14,6 +14,7 @@
 #include <spdlog/sinks/basic_file_sink.h>
 #include <fmt/format.h>
 #include <fmt/color.h>
+#include <fmt/ostream.h>
 
 namespace xrn {
 

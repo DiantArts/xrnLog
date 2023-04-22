@@ -17,7 +17,7 @@ template <
 )
 {
 #if defined(NO_DEBUG)
-    if (level == Logger::Level::debug) {
+    if (level != Logger::Level::debug) {
         return this->logImpl(
             filepath,
             functionName,
@@ -65,7 +65,7 @@ template <
 )
 {
 #if defined(PRINT_ASSERTS) && defined(NO_DEBUG)
-    if (level == Logger::Level::debug) {
+    if (level != Logger::Level::debug) {
         if (condition) {
             return this->logImpl(
                 filepath,
@@ -111,7 +111,7 @@ template <
         );
     }
 #elif defined(NO_DEBUG)
-    if (level == Logger::Level::debug) {
+    if (level != Logger::Level::debug) {
         if (condition) {
             return this->logImpl(
                 filepath,

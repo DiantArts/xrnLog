@@ -703,7 +703,6 @@ template <
     auto relaviteFilepath{
         ::std::filesystem::relative(::std::filesystem::path{ filepath }, ".").generic_string()
     };
-    ::fmt::print("{}\n", "heo");
     if (relaviteFilepath.starts_with("sources/")) {
         relaviteFilepath = relaviteFilepath.substr(8);
     } else if (auto pos{ relaviteFilepath.find("/sources/") }; pos != ::std::string::npos) {
